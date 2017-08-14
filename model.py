@@ -13,7 +13,7 @@ class User(Base):
 
     __tablename__ = 'Users'
     id = Column(Integer, primary_key=True)
-    user = Column(String)
+    email = Column(String)
     name = Column(String)
     password = Column(String)
     usertype = Column(String)
@@ -43,6 +43,8 @@ class Notification(Base):
     id = Column(Integer, primary_key=True)
     platform = Column(String)
     date = Column(DateTime, server_default=func.now())
+    message = Column(String)
+
 
 class Action(Base):
 
@@ -50,6 +52,8 @@ class Action(Base):
     id = Column(Integer, primary_key=True)
     amount = Column(Float)
     date = Column(DateTime, server_default=func.now())
+    performed_by(Integer, Foreign_key(User.id))
+
 
 engine = create_engine('postgresql://postgres:postgres@localhost/postgres')
 Session = sessionmaker(bind=engine)
