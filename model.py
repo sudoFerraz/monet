@@ -52,7 +52,7 @@ class Action(Base):
     id = Column(Integer, primary_key=True)
     amount = Column(Float)
     date = Column(DateTime, server_default=func.now())
-    performed_by(Integer, Foreign_key(User.id))
+    performed_by = Column(Integer, ForeignKey(User.id))
 
 
 engine = create_engine('postgresql://postgres:postgres@localhost/postgres')

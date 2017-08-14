@@ -2,12 +2,10 @@
 
 import sqlalchemy
 import os
-import paramiko
 import hashlib
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.scoping import scoped_session
-from sqlalchemy.orm.scoping import relationship
 from sqlalchemy import inspect
 
 
@@ -69,7 +67,7 @@ class user_handler(object):
 
     def update_user_pass(self, session, usernewpass, useremail):
         founduser = session.query(User).filter_by(email=useremail).first()
-        if no founduser:
+        if not founduser:
             return False
         founduser.password = usernewpass
         session.commit()
@@ -109,7 +107,7 @@ class data_handler(object):
 class signal_handler(object):
     def create_signal(self, session, signal_indicator, signal_date, signal_accuracy):
         new_signal = model.Signal(indicator=signal_indicator, date=signal_date,\
-                                  date=signal_date, accuracy=signal_accuracy)
+                                  accuracy=signal_accuracy)
         session.add(new_signal)
         session.commit()
         session.flush()
