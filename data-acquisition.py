@@ -116,4 +116,50 @@ def _query(symbols='', qualifier='default', api_format='csv', snapshot=True \
     else:
         symbols = list(map(lambda s: s.upper(), symbols))
 
+    if symbols = ['']:
+        if not is_registered:
+            symbols = SYMBOLS_NOT_AUTH
+        else:
+            symbols = SYMBOLS_ALL
 
+    if not is_registered or force_unregistered:
+        response = _query_not_auth(session, symbols, api_format, snapshot)
+        data = response.text
+    else:
+        session_data = _connect(session, username, password, symbols, qualifier, \
+                                api_format, snapshot)
+        error_msg = 'not authorized'
+        if error_msg in session_data:
+            raise(Exception(error_msg))
+
+        response = _query_auth_send(session, session_data)
+        data = response.text
+
+        response = _disconnect(session, session_data)
+
+    if flag_parse_data:
+        df = _parse_data(data)
+        return(df)
+    else:
+        return(data)
+
+def read(symbols, username, password, force_unregistered, session):
+
+    qualifier = 'default'
+    api_format = 'csv'
+    snapshot = True
+    flag_parse_data = True
+
+    data = _query(symbols, qualifier, api_format, snapshot, username, password, \
+                  force_unregistered, flag_parse_data, session)
+
+    return data
+
+def _initi_credentials(username='', password=''):
+    if username=='':
+        username = os.getenv('TRUEFX_USERNAME')
+    if password=='':
+        password = os.getenv('TRUEFX_PASSWORD')
+    return(username, password)
+
+def _get_session(expire_after, cache_name='cache'):
