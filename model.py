@@ -33,7 +33,7 @@ class Signal(Base):
 
     __tablename__ = "Signals"
     id = Column(Integer, primary_key=True)
-    indicator = Column(String)
+    indicator = Column(Integer, ForeignKey('Indicator.id'))
     date = Column(DateTime, server_default=func.now())
     accuracy = Column(Boolean)
 
@@ -53,6 +53,13 @@ class Action(Base):
     amount = Column(Float)
     date = Column(DateTime, server_default=func.now())
     performed_by = Column(Integer, ForeignKey(User.id))
+
+class Indicator(Base):
+    __tablename__ = "Indicator"
+    id = Column(Integer, primary_key=True)
+    name = Column(Strin)
+    date = Column(DateTime, server_default=func.now())
+
 
 
 engine = create_engine('postgresql://postgres:postgres@localhost/postgres')

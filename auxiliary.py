@@ -202,3 +202,35 @@ class action_handler(object):
         return found_actions
 
 
+class indicator_handler(object):
+    def create_indicator(self, session, indicator_name, indicator_date):
+        new_indicator = model.Indicator(name=indicator_name, date=indicator_date)
+        session.add(new_indicator)
+        session.commit()
+        session.flush()
+        return new_indicator
+
+    def get_indicator(self, sesison, indicator_id):
+        found_indicator = session.query(Indicator).filter_by(id=indicator_id).first()
+        if not found_indicator:
+            return False
+        if found_indicator.id == indicator_id:
+            return found_indicator
+        else:
+            return False
+
+    def delete_indicator(self, session, indicator_id):
+        deleted_indicator = session.query(Indicator).filter_by(id=indicator_id).delete()
+        session.commit()
+        session.flush()
+
+    def get_indicator_by_name(self, session, indicator_name):
+        found_indicator = session.query(Indicator).filter_by(name=indicator_name).first()
+        if not found_indicator:
+            return False
+        if found_indicator.name == indicator_name:
+            return found_indicator
+        else:
+            return False
+
+
