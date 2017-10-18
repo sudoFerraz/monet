@@ -57,7 +57,14 @@ class Action(Base):
 class Indicator(Base):
     __tablename__ = "Indicator"
     id = Column(Integer, primary_key=True)
-    name = Column(Strin)
+    name = Column(String)
+    date = Column(DateTime, server_default=func.now())
+
+class Strategy(Base):
+    __tablename__ = "Strategy"
+    id = Column(Integer, primary_key=True)
+    indicators = Column(Integer, ForeignKey(Indicator.id))
+    name = Column(String)
     date = Column(DateTime, server_default=func.now())
 
 
