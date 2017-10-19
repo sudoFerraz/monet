@@ -226,22 +226,6 @@ class graph_storage(object):
         session.commit()
         session.flush()
 
-    def get_csv(self, session, wanted_csv):
-        #Searching trough id
-        found_csv = session.query(CSV).filter_by(id=wanted_csv).first()
-        if found_csv.id == wanted_csv:
-            return found_csv
-        else:
-            return False
-
-    def get_csv_id(self, session, wanted_csv_name):
-        #Searching trough name
-        found_csv = session.query(CSV).filter_by(csv_name=wanted_csv_name).first()
-        if found_csv.csv_name == wanted_csv_name:
-            return found_csv.id
-        else:
-            return False
-
 
 
 

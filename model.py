@@ -2,12 +2,19 @@
 import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, Date, DateTime, Float
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, LargeBinary
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.sql import func
 
 Base = declarative_base()
+
+class CSV(Base):
+    __tablename__ = 'CSVs'
+    id = Column(Integer, primary_key=True)
+    csv_file = Column(LargeBinary)
+    csv_name = Column(String)
+
 
 class User(Base):
 
