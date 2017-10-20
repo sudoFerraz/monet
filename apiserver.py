@@ -19,6 +19,9 @@ app.config['SECRET_KEY'] = 'postgres'
 
 db = SQLAlchemy(app)
 admin = Admin(app)
+tools = auxiliary.ostools()
+tools.db_connection()
+
 
 ferramenta = auxiliary.ostools()
 session = ferramenta.dbconnetion()
@@ -27,6 +30,7 @@ data_handler= auxiliary.data_handler()
 signal_handler = auxiliary.signal_handler()
 notification_handler = auxiliary.notification_handler()
 action_handler = auxiliary.action_handler()
+invoice_handler = auxiliary.invoice_handler()
 
 @app.teardown_request
 def app_teardown(response_or_exc):
@@ -46,3 +50,26 @@ class MyModelView(ModelView):
 @app.route('/')
 def index():
     return "Index"
+
+@app.route('/register/<string:email>/<string:password>/<string:username>')
+def register():
+    if request.method == 'GET':
+        return True
+    elif request.method == 'POST':
+        newuser = user_handler.create_user(email, username, password)
+        if newuser:
+            return True
+        else:
+            return False
+
+@app.route('/invoice_register/<string:invoice_name>/<float:amount>')
+def invoice_register():
+    if request.method == 'GET':
+        return True
+    elif request.method == 'POST':
+        newinvoice = invoice_handler.create_invoice(amount, invoice_name)
+        if newinvoice:
+            return True
+        else:
+            return False
+
