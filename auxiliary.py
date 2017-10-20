@@ -170,6 +170,36 @@ class notification_handler(object):
                 return False
         return found_notifications
 
+class invoice_handler(object):
+    def create_invoice(self, session, new_amount, new_name):
+        new_invoice = model.Invoice(amount=new_amount, name=new_name)
+        session.add(new_invoice)
+        session.commit()
+        session.flush()
+        return new_invoice
+
+    def delete_invoice(self, session, invoice_id):
+        to_be_deleted_invoice = session.query(Invoice).filter_by(id=invoice_id).delete()
+        session.commit()
+        session.flush()
+
+    def grab_invoice_id(self, session, invoice_name):
+        found_invoice = session.query(Invoice).filter_by(name=invoice_name).first()
+        if found_invoice.name == invoice_name:
+            return found_invoice
+        else:
+            return False
+
+    def update_invoice(self, session, invoice_paid_date, invoice_id):
+        found_invoice = session.query(Invoice).filter_by(id=invoice_id).first()
+        if found_invoice.id == invoice_id:
+            found_invoice.paid = True
+            found_invoice.date_paid = invoice_paid_date
+            return found_invoice
+        else:
+            return False
+
+
 class action_handler(object):
     def create_action(self, session, action_amount, action_date, action_user):
         new_action = model.Action(amount=action_amount, date=action_date, \

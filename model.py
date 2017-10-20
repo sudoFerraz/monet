@@ -52,14 +52,24 @@ class Notification(Base):
     date = Column(DateTime, server_default=func.now())
     message = Column(String)
 
+class Invoice(Base):
 
-class Action(Base):
+    __tablename__ = "Invoice"
+    id = Column(Integer, primary_key=True)
+    start_date = Column(DateTime, server_default=func.now())
+    paid = Column(Boolean)
+    amount = Column(Float)
+    date_paid = Column(DateTime)
+    name = Column(String)
+
+
+class Pay_Action(Base):
 
     __tablename__ = "Action"
     id = Column(Integer, primary_key=True)
-    amount = Column(Float)
     date = Column(DateTime, server_default=func.now())
     performed_by = Column(Integer, ForeignKey(User.id))
+    invoice_acted = Column(Integer, ForeignKey(Invoice.id))
 
 class Indicator(Base):
     __tablename__ = "Indicator"
