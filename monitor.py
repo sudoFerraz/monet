@@ -30,14 +30,17 @@ while True:
     df = web.DataReader('BRL=X', 'yahoo')
     df.to_csv('brlusd.csv', mode='w', header=True)
     data = StockDataFrame.retype(pd.read_csv('brlusd.csv'))
-   # print data['boll_ub']
-  #  print data['boll_lb']
+    print data['boll_ub']
+    print data['boll_lb']
     print data
+    print data['macdh']
     close_price = data['close']
     up_bollinger = data['boll_ub']
     low_bollinger = data['boll_lb']
+    last_bollinger_up = up_bollinger[-1]
+    #print last_bollinger_up[-1]
     trace = go.Candlestick(x=data.index, open=data.open, high=data.high, low=data.low, close=data.close)
-    #trace = go.Candlestick(x=data.index, close=data.macdh)
+    trace = go.Candlestick(x=data.index, close=data.macdh)
     data = [trace]
     py.offline.plot(data, filename='Updated_historical')
     c = CurrencyRates()
@@ -49,5 +52,6 @@ while True:
     print up_bollinger
     print low_bollinger
     plt.savefig('testingstockdata.png')
-    print a
-    time.sleep(7200)
+        #print a
+    print last_bollinger_up
+    time.sleep(60)
